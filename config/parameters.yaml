@@ -1,0 +1,5 @@
+parameters:
+    database_host:     localhost
+    database_name:     matches
+    database_user:     antoine
+    database_password: antoine92
