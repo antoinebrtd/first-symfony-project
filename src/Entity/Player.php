@@ -6,86 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="match")
- */
-class Match
-{
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="array", length=2)
-     */
-    private $players;
-
-    /**
-     * @ORM\Column(type="array", length=2)
-     */
-    private $score;
-
-    /**
-     * @ORM\Column(type="array", length=2)
-     */
-    private $teams;
-
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $date;
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getPlayers()
-    {
-        return $this->players;
-    }
-
-    public function getScore()
-    {
-        return $this->score;
-    }
-
-    public function getTeams()
-    {
-        return $this->teams;
-    }
-
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    public function setPlayers($players)
-    {
-        $this->players = $players;
-    }
-
-    public function setScore($score)
-    {
-        $this->score = $score;
-    }
-
-    public function setTeams($teams)
-    {
-        $this->teams = $teams;
-    }
-
-    public function setDate($date)
-    {
-        $this->date = $date;
-    }
-}
-
-/**
- * @ORM\Entity
- * @ORM\Table(name="player")
+ * @ORM\Table(name="players")
  */
 class Player
 {
@@ -132,12 +53,12 @@ class Player
     private $goaldiff;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="player_for", type="integer")
      */
     private $for;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="player_against", type="integer")
      */
     private $against;
 
@@ -250,87 +171,14 @@ class Player
     {
         $this->trophies = $trophies;
     }
-}
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="team")
- */
-class Team
-{
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $name;
-
-    public function getId()
+    public function toJson()
     {
-        return $this->id;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-}
-
-/**
- * @ORM\Entity
- * @ORM\Table(name="trophy")
- */
-class Trophy
-{
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $description;
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    public function setDescription($description)
-    {
-        $this->description = $description;
+      return [
+        "name" => $this->name,
+        "for" => $this->for,
+        "id" => $this->id,
+        "against" => $this->against
+      ];
     }
 }
