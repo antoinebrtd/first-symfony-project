@@ -181,4 +181,38 @@ class Player
         "against" => $this->against
       ];
     }
+
+    public function updateResultsPlayerOne($score)
+    {
+      $this->setPlayed($this->getPlayed() + 1);
+      $this->setGoaldiff($this->getGoaldiff() + $score[0] - $score[1]);
+      $this->setFor($this->getFor() + $score[0]);
+      $this->setAgainst($this->getAgainst() + $score[1]);
+      if ($score[0] > $score[1]) {
+        $this->setPoints($this->getPoints() + 3);
+        $this->setWins($this->getWins() + 1);
+      } elseif ($score[0] == $score[1]) {
+        $this->setPoints($this->getPoints() + 1);
+        $this->setDraws($this->getDraws() + 1);
+      } elseif ($score[0] < $score[1]) {
+        $this->setLosses($this->getLosses() + 1);
+      };
+    }
+
+    public function updateResultsPlayerTwo($score)
+    {
+      $this->setPlayed($this->getPlayed() + 1);
+      $this->setGoaldiff($this->getGoaldiff() + $score[1] - $score[0]);
+      $this->setFor($this->getFor() + $score[1]);
+      $this->setAgainst($this->getAgainst() + $score[0]);
+      if ($score[1] > $score[0]) {
+        $this->setPoints($this->getPoints() + 3);
+        $this->setWins($this->getWins() + 1);
+      } elseif ($score[1] == $score[0]) {
+        $this->setPoints($this->getPoints() + 1);
+        $this->setDraws($this->getDraws() + 1);
+      } elseif ($score[1] < $score[0]) {
+        $this->setLosses($this->getLosses() + 1);
+      };
+    }
 }
