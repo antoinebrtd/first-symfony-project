@@ -175,12 +175,26 @@ class Player
     public function toJson()
     {
       return [
-        "name" => $this->name,
-        "for" => $this->for,
         "id" => $this->id,
-        "against" => $this->against
+        "name" => $this->name,
+        "played" => $this->played,
+        "wins" => $this->wins,
+        "draws" => $this->draws,
+        "losses" => $this->losses,
+        "points" => $this->points,
+        "goaldiff" => $this->goaldiff,
+        "for" => $this->for,
+        "against" => $this->against,
+        "trophies" => $this->trophies
       ];
     }
+
+    public function objectToArray ($object) {
+      if(!is_object($object) && !is_array($object))
+          return $object;
+
+      return array_map('objectToArray', (array) $object);
+  }
 
     public function updateResultsPlayerOne($score)
     {

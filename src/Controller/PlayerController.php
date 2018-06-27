@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
-// ...
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Player;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,60 +15,51 @@ class PlayerController extends Controller
      */
     public function addPlayer(EntityManagerInterface $entityManager)
     {
-        // you can fetch the EntityManager via $this->getDoctrine()
-        // or you can add an argument to your action: createAction(EntityManagerInterface $entityManager)
+      $request_body = json_decode(file_get_contents('php://input'));
+      $player = new Player();
+      $player->setName($request_body->player);
+      $player->setPlayed(0);
+      $player->setWins(0);
+      $player->setDraws(0);
+      $player->setLosses(0);
+      $player->setPoints(0);
+      $player->setGoaldiff(0);
+      $player->setFor(0);
+      $player->setAgainst(0);
+      $player->setTrophies([]);
 
-        $player = new Player();
-        $player->setName('Tutur');
-        $player->setPlayed(0);
-        $player->setWins(0);
-        $player->setDraws(0);
-        $player->setLosses(0);
-        $player->setPoints(0);
-        $player->setGoaldiff(0);
-        $player->setFor(0);
-        $player->setAgainst(0);
-        $player->setTrophies([]);
+      $entityManager->persist($player);
 
-        // tells Doctrine you want to (eventually) save the Product (no queries yet)
-        $entityManager->persist($player);
+      $entityManager->flush();
 
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
+      $response = new JsonResponse(
+        'added player',
+        200,
+        array('access-control-allow-origin' => '*')
+      );
 
-        return $this->render('AddPlayer.html.twig', array(
-          'id' => $player->getId(),
-        ));
-    }
-
-    // if you have multiple entity managers, use the registry to fetch them
-    public function editAction()
-    {
-        $doctrine = $this->getDoctrine();
-        $entityManager = $doctrine->getManager();
-        $otherEntityManager = $doctrine->getManager('other_connection');
+      return $Response;
     }
 
     /**
-     * @Route("/players/display/{id}", name="player_display")
+     * @Route("/fetch/players", name="fetch_players")
      */
-    public function displayPlayer($id)
+    public function fetchPlayers()
     {
-      $player = $this->getDoctrine() //lancer la co avec doctrine
-      ->getRepository(Player::class) //va me chercher les requetes de base sur player
-      ->find($id); //equivalent du select
+      $players = (array) $this->getDoctrine()
+      ->getRepository(Player::class)
+      ->findAll();
 
-      $repository = $this->getDoctrine()
-      ->getRepository(Player::class);
+      $data = [];
 
-      //$player = $repository->find(6); pareil qu'au dessus
-
-      //$player = $repository->findOneById(6); pareil qu'au dessus
+      foreach($players as $player) {
+        array_push($data, [$player->getId() => $player->toJson()]);
+      };
 
       $response = new JsonResponse(
-        $player->toJson(),
+        $data,
         200,
-        array('access-control-allow-origin' => '*')
+        array('accless-control-allow-origin' => '*')
       );
 
       return $response;

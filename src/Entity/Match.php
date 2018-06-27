@@ -37,6 +37,12 @@ class Match
      */
     private $date;
 
+    public function __construct($parameters) {
+      foreach($parameters as $key => $value) {
+          $this->$key = $value;
+      }
+    }
+
     public function getId()
     {
         return $this->id;
@@ -81,4 +87,15 @@ class Match
     {
         $this->date = $date;
     }
+
+    public function matchToJson()
+      {
+        return [
+          "id" => $this->id,
+          "players" => $this->players,
+          "teams" => $this->teams,
+          "score" => $this->score,
+          "date" => $this->date
+        ];
+      }
 }
