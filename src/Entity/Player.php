@@ -196,37 +196,29 @@ class Player
       return array_map('objectToArray', (array) $object);
   }
 
-    public function updateResultsPlayerOne($score)
+    public function updateResultsPlayers($playerOne, $playerTwo, $score)
     {
-      $this->setPlayed($this->getPlayed() + 1);
-      $this->setGoaldiff($this->getGoaldiff() + $score[0] - $score[1]);
-      $this->setFor($this->getFor() + $score[0]);
-      $this->setAgainst($this->getAgainst() + $score[1]);
+      $playerOne->setPlayed($playerOne->getPlayed() + 1);
+      $playerOne->setGoaldiff($playerOne->getGoaldiff() + $score[0] - $score[1]);
+      $playerOne->setFor($playerOne->getFor() + $score[0]);
+      $playerOne->setAgainst($playerOne->getAgainst() + $score[1]);
+      $playerTwo->setPlayed($playerTwo->getPlayed() + 1);
+      $playerTwo->setGoaldiff($playerTwo->getGoaldiff() + $score[1] - $score[0]);
+      $playerTwo->setFor($playerTwo->getFor() + $score[1]);
+      $playerTwo->setAgainst($playerTwo->getAgainst() + $score[0]);
       if ($score[0] > $score[1]) {
-        $this->setPoints($this->getPoints() + 3);
-        $this->setWins($this->getWins() + 1);
+        $playerOne->setPoints($playerOne->getPoints() + 3);
+        $playerOne->setWins($playerOne->getWins() + 1);
+        $playerTwo->setLosses($playerTwo->getLosses() + 1);
       } elseif ($score[0] == $score[1]) {
-        $this->setPoints($this->getPoints() + 1);
-        $this->setDraws($this->getDraws() + 1);
+        $playerOne->setPoints($playerOne->getPoints() + 1);
+        $playerOne->setDraws($playerOne->getDraws() + 1);
+        $playerTwo->setPoints($playerTwo->getPoints() + 1);
+        $playerTwo->setDraws($playerTwo->getDraws() + 1);
       } elseif ($score[0] < $score[1]) {
-        $this->setLosses($this->getLosses() + 1);
-      };
-    }
-
-    public function updateResultsPlayerTwo($score)
-    {
-      $this->setPlayed($this->getPlayed() + 1);
-      $this->setGoaldiff($this->getGoaldiff() + $score[1] - $score[0]);
-      $this->setFor($this->getFor() + $score[1]);
-      $this->setAgainst($this->getAgainst() + $score[0]);
-      if ($score[1] > $score[0]) {
-        $this->setPoints($this->getPoints() + 3);
-        $this->setWins($this->getWins() + 1);
-      } elseif ($score[1] == $score[0]) {
-        $this->setPoints($this->getPoints() + 1);
-        $this->setDraws($this->getDraws() + 1);
-      } elseif ($score[1] < $score[0]) {
-        $this->setLosses($this->getLosses() + 1);
+        $playerOne->setLosses($playerOne->getLosses() + 1);
+        $playerTwo->setPoints($playerTwo->getPoints() + 3);
+        $playerTwo->setWins($playerTwo->getWins() + 1);
       };
     }
 }
