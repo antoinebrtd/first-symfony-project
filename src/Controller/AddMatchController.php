@@ -34,8 +34,6 @@ class AddMatchController extends Controller
       $playerOne->updateResultsPlayers($playerOne, $playerTwo, $request_body->score);
 
       $entityManager->persist($match);
-      $entityManager->persist($playerOne);
-      $entityManager->persist($playerTwo);
 
       $entityManager->flush();
 
