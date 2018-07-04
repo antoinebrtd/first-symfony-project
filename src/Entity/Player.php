@@ -172,7 +172,7 @@ class Player
         $this->trophies = $trophies;
     }
 
-    public function toJson()
+    public function playerToJson()
     {
       return [
         "id" => $this->id,
