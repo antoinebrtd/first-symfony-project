@@ -36,4 +36,12 @@ class Team
     {
         $this->name = $name;
     }
+
+    public function teamToJson()
+    {
+      return [
+        "id" => $this->id,
+        "name" => $this->name
+      ];
+    }
 }
