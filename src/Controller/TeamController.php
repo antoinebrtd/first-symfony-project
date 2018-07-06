@@ -6,6 +6,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Team;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
@@ -30,6 +31,30 @@ class TeamController extends Controller
       $response = new JsonResponse(
         $data,
         200,
+        array('access-control-allow-origin' => '*')
+      );
+
+      return $response;
+    }
+
+    /**
+     * @Route("/teams", name="add_team")
+     * @Method({"POST"})
+     */
+    public function addTeam(Request $request, EntityManagerInterface $entityManager)
+    {
+      $request_body = json_decode($request->getContent());
+
+      $team = new Team();
+      $team->setName($request_body->name);
+
+      $entityManager->persist($team);
+
+      $entityManager->flush();
+
+      $response = new JsonResponse(
+        $team->teamToJson(),
+        201,
         array('access-control-allow-origin' => '*')
       );
 
