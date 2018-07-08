@@ -189,13 +189,6 @@ class Player
       ];
     }
 
-    public function objectToArray ($object) {
-      if(!is_object($object) && !is_array($object))
-          return $object;
-
-      return array_map('objectToArray', (array) $object);
-  }
-
     public function updateResultsPlayers($playerOne, $playerTwo, $score)
     {
       $playerOne->setPlayed($playerOne->getPlayed() + 1);

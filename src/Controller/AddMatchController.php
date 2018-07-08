@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use \Datetime;
+use \DateTimeZone;
 
 class AddMatchController extends Controller
 {
@@ -22,6 +24,9 @@ class AddMatchController extends Controller
       $request_body = json_decode($request->getContent());
 
       $match = new Match($request_body);
+      $date = new DateTime();
+      $date->setTimeZone(new DateTimeZone('Europe/Paris'));
+      $match->setDate($date);
 
       $playerOne=$this->getDoctrine()
       ->getRepository(Player::class)

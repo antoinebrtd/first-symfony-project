@@ -33,7 +33,7 @@ class Match
     private $teams;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="datetimetz")
      */
     private $date;
 
