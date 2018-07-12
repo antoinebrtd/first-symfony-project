@@ -8,17 +8,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
 use \Datetime;
 use \DateTimeZone;
 
 class FetchMatchController extends Controller
 {
     /**
-     * @Route("/matches?recent={value}", name="fetch_recent_matches")
+     * @Route("/matches", name="fetch_recent_matches")
      * @Method({"GET"})
      */
-    public function fetchRecentMatches(EntityManagerInterface $entityManager, $value)
+    public function fetchRecentMatches(Request $request, EntityManagerInterface $entityManager)
     {
+      $value = $request->query->get('recent');
       switch ($value) {
         case 0:
           $to_compare = (new DateTime())->setTime(0,0);
@@ -33,12 +35,14 @@ class FetchMatchController extends Controller
 
       $to_compare->setTimeZone(new DateTimeZone('Europe/Paris'));
       //faire avec query builder
-      $query = $entityManager->createQuery(
-        'SELECT m
-        FROM App\Entity\Match m
-        WHERE m.date > :date
-        ORDER BY m.date DESC'
-      )->setParameter('date', $to_compare);
+      $qb = $entityManager->createQueryBuilder();
+      $qb->select('m')
+        ->from('App\Entity\Match', 'm')
+        ->where('m.date > :date')
+        ->orderBy('m.date', 'DESC')
+        ->setParameter('date', $to_compare);
+
+      $query=$qb->getQuery();
 
       $recent_matches = $query->getResult();
 
