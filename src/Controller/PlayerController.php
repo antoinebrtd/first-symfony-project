@@ -21,11 +21,7 @@ class PlayerController extends Controller
       ->getRepository(Player::class)
       ->findAll();
 
-      $data = [];
-
-      foreach($players as $player) {
-        array_push($data, [$player->playerToJson()]);
-      };
+      $data = array_map(function($player){return $player->playerToJson();}, $players);
 
       $response = new JsonResponse(
         $data,

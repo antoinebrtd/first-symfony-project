@@ -22,11 +22,7 @@ class TeamController extends Controller
       ->getRepository(Team::class)
       ->findAll();
 
-      $data = [];
-
-      foreach($teams as $team) {
-        array_push($data, [$team->teamToJson()]);
-      };
+      $data = array_map(function($team){return $team->teamToJson();}, $teams);
 
       $response = new JsonResponse(
         $data,
